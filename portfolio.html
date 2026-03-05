@@ -11,13 +11,11 @@
 </head>
 <body>
 
-  <!-- BG FX -->
   <div class="grid-bg"></div>
   <div class="scanlines"></div>
   <div class="glow-blob one"></div>
   <div class="glow-blob two"></div>
 
-  <!-- ── NAV ── -->
   <nav>
     <div class="nav-container">
       <a href="index.html" class="logo">GLRX</a>
@@ -44,14 +42,12 @@
   </nav>
   <div class="nav-overlay" id="navOverlay"></div>
 
-  <!-- ── PORTFOLIO CONTENT ── -->
   <div class="page-content">
     <div class="section-wrap">
 
       <div class="section-label fade-in d1">SYS::PROJECTS_MODULE // LOADED</div>
       <h2 class="section-title fade-in d2"><span>Project</span> Archive</h2>
 
-      <!-- Filter buttons -->
       <div class="filter-bar fade-in d3" id="filterBar">
         <button class="filter-btn active" data-filter="all">// All</button>
         <button class="filter-btn" data-filter="design">Design</button>
@@ -59,27 +55,12 @@
         <button class="filter-btn" data-filter="brand">Brand</button>
       </div>
 
-      <!--
-        ══════════════════════════════════════════
-        PROJECT CARDS
-        ══════════════════════════════════════════
-        To add a new project:
-          1. Copy one of the .project-card blocks below
-          2. Set data-cat to: "design" | "dev" | "brand"
-          3. Add .mag-card class for magenta accent (optional)
-          4. Update all the content inside
-        ══════════════════════════════════════════
-      -->
-
       <div class="projects-grid" id="projectsGrid">
 
-        <!-- ✏️ PROJECT 1 -->
         <div class="project-card anim" data-cat="design">
           <div class="project-thumb">
             <span class="thumb-label">[ PROJECT_01 ]</span>
-            <!-- 💡 Replace thumb with an <img> tag if you have a screenshot:
-                 <img src="images/project1.jpg" alt="Project 1" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0;">
-            -->
+
           </div>
           <div class="project-body">
             <div class="project-meta">
@@ -100,7 +81,6 @@
           </div>
         </div>
 
-        <!-- ✏️ PROJECT 2 — magenta accent -->
         <div hidden class="project-card mag-card anim" data-cat="dev">
           <div class="project-thumb">
             <span class="thumb-label">[ PROJECT_02 ]</span>
@@ -124,7 +104,6 @@
           </div>
         </div>
 
-        <!-- ✏️ PROJECT 3 -->
         <div hidden class="project-card anim" data-cat="brand">
           <div class="project-thumb">
             <span class="thumb-label">[ PROJECT_03 ]</span>
@@ -147,7 +126,6 @@
           </div>
         </div>
 
-        <!-- ✏️ PROJECT 4 — magenta accent -->
         <div hidden class="project-card mag-card anim" data-cat="design">
           <div class="project-thumb">
             <span class="thumb-label">[ PROJECT_04 ]</span>
@@ -170,7 +148,6 @@
           </div>
         </div>
 
-        <!-- ✏️ PROJECT 5 -->
         <div hidden class="project-card anim" data-cat="dev">
           <div class="project-thumb">
             <span class="thumb-label">[ PROJECT_05 ]</span>
@@ -193,7 +170,6 @@
           </div>
         </div>
 
-        <!-- ✏️ PROJECT 6 -->
         <div hidden class="project-card anim" data-cat="brand">
           <div class="project-thumb">
             <span class="thumb-label">[ PROJECT_06 ]</span>
@@ -214,15 +190,10 @@
             </div>
           </div>
         </div>
-        
-
-        <!-- ✏️ Add more projects here by copying a .project-card block above -->
-
-      </div><!-- /projects-grid --> 
+      </div> 
     </div>
   </div>
 
-  <!-- ── FOOTER ── -->
   <footer>
     <div class="footer-inner">
       <span class="footer-brand">© 2026 GLRX</span>
