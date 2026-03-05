@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000000" id="meta-theme">
+  <title>GLRX — About</title>
+    <link rel="icon" type="image/png" href="img/logo.jpg">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- BG FX -->
+  <div class="grid-bg"></div>
+  <div class="scanlines"></div>
+  <div class="glow-blob one"></div>
+  <div class="glow-blob two"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-container">
+      <a href="index.html" class="logo">GLRX</a>
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="portfolio.html">Portfolio</a></li>
+        <li><a href="contact.html">Contact</a></li>
+      </ul>
+      <div class="nav-right">
+        <div class="nav-status">
+          <div class="pulse-dot"></div>
+          <span>ONLINE</span>
+        </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <span id="themeIcon">☀️</span>
+          <span class="toggle-label" id="themeLabel">LIGHT</span>
+        </button>
+        <div class="hamburger" id="hamburger" role="button" tabindex="0" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="nav-overlay" id="navOverlay"></div>
+
+  <!-- ABOUT CONTENT -->
+  <div class="page-content">
+    <div class="section-wrap">
+
+      <div class="section-label fade-in d1">SYS::ABOUT_MODULE // LOADED</div>
+      <h2 class="section-title fade-in d2">About <span>Me</span></h2>
+
+      <div class="about-grid">
+
+        <!-- ═══════════════
+             LEFT COLUMN
+             Avatar + Status card
+        ═══════════════ -->
+        <div class="about-avatar-wrap anim">
+
+          <div class="about-avatar-ring">
+            <svg class="ring" viewBox="0 0 300 300" fill="none">
+              <circle cx="150" cy="150" r="140" stroke="rgba(0,245,255,0.15)" stroke-width="1" stroke-dasharray="6 6"/>
+              <circle cx="150" cy="150" r="140" stroke="rgba(0,245,255,0.85)" stroke-width="2" stroke-dasharray="35 520"/>
+            </svg>
+            <svg class="ring2" viewBox="0 0 268 268" fill="none">
+              <circle cx="134" cy="134" r="124" stroke="rgba(255,0,170,0.2)" stroke-width="1" stroke-dasharray="4 9"/>
+              <circle cx="134" cy="134" r="124" stroke="rgba(255,0,170,0.75)" stroke-width="1.5" stroke-dasharray="20 460"/>
+            </svg>
+            <div class="about-avatar-inner about-avatar-photo">
+              <img src="img/GLRX.png" alt="GLRX Profile Photo" />
+            </div>
+          </div>
+
+          <div class="about-status-card">
+            <div class="about-status-row"><span class="key">NAME</span><span>de Guzman, Gail Rex</span></div>
+            <div class="about-status-row"><span class="key">ROLE</span><span> Web Designer / Dev</span></div>
+            <div class="about-status-row"><span class="key">LOCATION</span><span>Cainta, Rizal</span></div>
+            <div class="about-status-row"><span class="key">STATUS</span><span class="status-available">Available ●</span></div>
+            <div class="about-status-row"><span class="key">EXP</span><span>--</span></div>
+            <div class="about-status-row"><span class="key"></span><br><span> </span></div>
+
+             <!-- Social Links -->
+          <div class="social-menu">
+            <ul>
+              <li hidden>
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <span class="tooltip">Facebook</span>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-upwork"></i></a>
+                <span class="tooltip">Upwork</span>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-github"></i></a>
+                <span class="tooltip">GitHub</span>
+              </li>
+              <li>
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <span class="tooltip">LinkedIn</span>
+              </li>
+            </ul>
+          </div>
+          </div>
+
+        </div><!-- /about-avatar-wrap -->
+
+        <!-- ═══════════════
+             RIGHT COLUMN
+             Bio + Skills + Experience
+        ═══════════════ -->
+        <div class="about-bio">
+
+          <!-- Bio -->
+          <p class="anim">Hello! I'm an IT professional transitioning into web design and development. I'm passionate about building beautiful, functional digital experiences. I combine clean design thinking with strong technical execution to create products that users genuinely love.</p>
+          <p class="anim">My work spans UI/UX design, frontend development, and brand identity — always with a focus on clarity, performance, and detail. I thrive at the intersection of design and code.</p>
+          <p class="anim">When I'm not pushing pixels, you'll find me exploring new technologies, contributing to open-source, and continuously leveling up my craft.</p>
+
+          <!-- Skills -->
+          <div class="sep-row anim" style="margin: 2rem 0 1rem;">
+            <div class="sep-line"></div>
+            <span class="sep-text">// SKILLS</span>
+            <div class="sep-line"></div>
+          </div>
+
+          <div class="skills-grid anim">
+            <div>
+              <div class="skill-bar-wrap">
+                <div class="skill-bar-label"><span>UI / UX Design</span><span>92%</span></div>
+                <div class="skill-bar-track"><div class="skill-bar-fill" data-width="92"></div></div>
+              </div>
+              <div class="skill-bar-wrap">
+                <div class="skill-bar-label"><span>HTML / CSS</span><span>95%</span></div>
+                <div class="skill-bar-track"><div class="skill-bar-fill" data-width="95"></div></div>
+              </div>
+              <div class="skill-bar-wrap">
+                <div class="skill-bar-label"><span>JavaScript</span><span>85%</span></div>
+                <div class="skill-bar-track"><div class="skill-bar-fill" data-width="85"></div></div>
+              </div>
+            </div>
+            <div hidden>
+              <div class="skill-bar-wrap">
+                <div class="skill-bar-label"><span>React / Vue</span><span>78%</span></div>
+                <div class="skill-bar-track"><div class="skill-bar-fill mag" data-width="78"></div></div>
+              </div>
+              <div class="skill-bar-wrap">
+                <div class="skill-bar-label"><span>Figma</span><span>90%</span></div>
+                <div class="skill-bar-track"><div class="skill-bar-fill mag" data-width="90"></div></div>
+              </div>
+              <div class="skill-bar-wrap">
+                <div class="skill-bar-label"><span>Branding</span><span>82%</span></div>
+                <div class="skill-bar-track"><div class="skill-bar-fill mag" data-width="82"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Experience -->
+          <div class="sep-row anim" style="margin: 2.5rem 0 1rem;">
+            <div class="sep-line"></div>
+            <span class="sep-text">// EXPERIENCE</span>
+            <div class="sep-line"></div>
+          </div>
+
+          <div class="timeline">
+            <div class="tl-item anim">
+              <div class="tl-year">Online Helpers | Apr 2025 – Dec 2025</div>
+              <div class="tl-title">Virtual Assistant / AI Trainer</div>
+              <div class="tl-desc">Supervise AI systems in processing orders and monitor usage errors. Ensure prompt resolution of issues to maintain customer satisfaction.</div>
+            </div>
+            <div class="tl-item anim">
+              <div class="tl-year">Bladegrass Technologies Inc. | 2022 – 2023</div>
+              <div class="tl-title">Technical Support Engineer</div>
+              <div class="tl-desc">Handled IT support tickets, ensuring timely resolutions. Implemented troubleshooting measures that reduced recurring issues.</div>
+            </div>
+            <div class="tl-item anim">
+              <div class="tl-year">VueScribe Inc. | TechSynergy | Summit Technologies Inc. | 2009 – 2014</div>
+              <div class="tl-title">Medical Transcriptionist</div>
+              <div class="tl-desc">Transcribed and edited medical reports with 98% accuracy. Utilized specialized transcription software and adhered to confidentiality standards. Developed strong attention to detail and familiarity with medical terminology.</div>
+            </div>
+          </div>
+
+        </div><!-- /about-bio -->
+      </div><!-- /about-grid -->
+    </div>
+  </div>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-brand">© 2026 GLRX</span>
+      <span class="footer-clock" id="clock-footer">00:00:00</span>
+      <span class="footer-sys">SYS::END</span>
+    </div>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
