@@ -1,9 +1,4 @@
-/* ════════════════════════════════════════════
-   GLRX PORTFOLIO — main.js
-   Shared scripts for all pages
-════════════════════════════════════════════ */
 
-/* ── THEME ── */
 const html      = document.documentElement;
 const metaTheme = document.getElementById('meta-theme');
 const themeIcon  = document.getElementById('themeIcon');
@@ -33,7 +28,6 @@ window.matchMedia('(prefers-color-scheme: dark)')
     if (!localStorage.getItem('theme')) applyTheme(e.matches);
   });
 
-/* ── HAMBURGER NAV ── */
 const hamburger  = document.getElementById('hamburger');
 const navMenu    = document.getElementById('navMenu');
 const navOverlay = document.getElementById('navOverlay');
@@ -56,7 +50,6 @@ navOverlay.addEventListener('click', () => toggleMenu(false));
 document.querySelectorAll('.nav-menu a')
   .forEach(a => a.addEventListener('click', () => toggleMenu(false)));
 
-/* ── ACTIVE NAV LINK (highlight current page) ── */
 const currentPage = window.location.pathname.split('/').pop() || 'index.html';
 document.querySelectorAll('.nav-menu a').forEach(a => {
   const href = a.getAttribute('href');
@@ -67,13 +60,11 @@ document.querySelectorAll('.nav-menu a').forEach(a => {
   }
 });
 
-/* ── SCROLL ANIMATIONS ── */
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.1 });
 document.querySelectorAll('.anim').forEach(el => observer.observe(el));
 
-/* ── FOOTER CLOCK ── */
 function tick() {
   const el = document.getElementById('clock-footer');
   if (!el) return;
@@ -86,7 +77,6 @@ function tick() {
 tick();
 setInterval(tick, 1000);
 
-/* ── SKILL BARS (About page) ── */
 function animateSkillBars() {
   document.querySelectorAll('.skill-bar-fill').forEach(bar => {
     const w = bar.dataset.width;
@@ -94,16 +84,14 @@ function animateSkillBars() {
   });
 }
 
-// Auto-trigger on About page
 if (document.querySelector('.skill-bar-fill')) {
-  // Trigger when in viewport
+
   const skillObserver = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) animateSkillBars(); });
   }, { threshold: 0.2 });
   document.querySelectorAll('.skills-grid').forEach(el => skillObserver.observe(el));
 }
 
-/* ── PROJECT FILTERS (Portfolio page) ── */
 const filterBar = document.getElementById('filterBar');
 if (filterBar) {
   filterBar.addEventListener('click', e => {
@@ -119,7 +107,6 @@ if (filterBar) {
   });
 
 }
-/* ── Social Menu (About page) ── */
  document.querySelectorAll('.social-menu a').forEach(link => {
       link.addEventListener('click', function(e) {
         const ripple = document.createElement('span');
@@ -132,35 +119,47 @@ if (filterBar) {
       });
     });
 
-/* ── Transmission (About page) ── */
      const form       = document.getElementById('contactForm');
     const submitBtn  = document.getElementById('submitBtn');
     const statusOk   = document.getElementById('statusSuccess');
     const statusErr  = document.getElementById('statusError');
 
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      statusOk.classList.remove('visible');
-      statusErr.classList.remove('visible');
 
-      const name    = form.name.value.trim();
-      const email   = form.email.value.trim();
-      const message = form.message.value.trim();
-      const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    statusOk.classList.remove('visible');
+    statusErr.classList.remove('visible');
 
-      if (!name || !email || !message || !emailRe.test(email)) {
-        statusErr.classList.add('visible');
-        return;
-      }
+    const name    = form.name.value.trim();
+    const email   = form.email.value.trim();
+    const message = form.message.value.trim();
+    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-      // Simulate sending (replace with real fetch/formspree/etc.)
-      submitBtn.classList.add('loading');
-      submitBtn.disabled = true;
+    if (!name || !email || !message || !emailRe.test(email)) {
+    statusErr.classList.add('visible');
+    return;
+  }
 
-      setTimeout(() => {
-        submitBtn.classList.remove('loading');
-        submitBtn.disabled = false;
-        statusOk.classList.add('visible');
-        form.reset();
-      }, 1800);
+    submitBtn.classList.add('loading');
+    submitBtn.disabled = true;
+
+    try {
+    const res = await fetch(form.action, {
+      method: 'POST',
+      body: new FormData(form),
+      headers: { 'Accept': 'application/json' }
     });
+
+    if (res.ok) {
+      statusOk.classList.add('visible');
+      form.reset();
+    } else {
+      statusErr.classList.add('visible');
+    }
+    } catch {
+    statusErr.classList.add('visible');
+    } finally {
+    submitBtn.classList.remove('loading');
+    submitBtn.disabled = false;
+  }
+});
