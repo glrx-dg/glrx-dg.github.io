@@ -582,17 +582,29 @@ footer::before {
   clip-path: polygon(100% 0, 0 0, 100% 100%);
   opacity: 0.3; transition: opacity 0.25s;
 }
+.project-thumb {
+  position: relative;
+  overflow: hidden;
+}
+
+.project-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.project-thumb .thumb-label {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 1; 
+}
+
 .project-card.mag-card::before { background: var(--magenta); }
 .project-card:hover { box-shadow: 0 0 28px var(--cyan-dim); border-color: rgba(0, 245, 255, 0.35); }
 .project-card.mag-card:hover { box-shadow: 0 0 28px var(--mag-dim); border-color: rgba(255, 0, 170, 0.35); }
 .project-card:hover::before { opacity: 1; }
-
-.project-thumb {
-  width: 100%; aspect-ratio: 16 / 9;
-  background: var(--bg-card); border-bottom: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-  position: relative; overflow: hidden; transition: var(--tr);
-}
 .project-thumb::after {
   content: ''; position: absolute; inset: 0;
   background: linear-gradient(135deg, var(--blob1), var(--blob2));
