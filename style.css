@@ -606,9 +606,8 @@ footer::before {
   transition: opacity 0.3s;
 }
 
-/* Hide the gradient when an img is present */
 .project-thumb:has(img)::after {
-  opacity: 0;
+  display: none;
 }
 
 /* Optional: subtle dark overlay on hover for text readability */
