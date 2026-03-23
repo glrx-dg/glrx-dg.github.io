@@ -1,4 +1,9 @@
+/* ════════════════════════════════════════════
+   GLRX PORTFOLIO — main.js
+   Shared scripts for all pages
+════════════════════════════════════════════ */
 
+/* ── THEME ── */
 const html      = document.documentElement;
 const metaTheme = document.getElementById('meta-theme');
 const themeIcon  = document.getElementById('themeIcon');
@@ -28,6 +33,7 @@ window.matchMedia('(prefers-color-scheme: dark)')
     if (!localStorage.getItem('theme')) applyTheme(e.matches);
   });
 
+/* ── HAMBURGER NAV ── */
 const hamburger  = document.getElementById('hamburger');
 const navMenu    = document.getElementById('navMenu');
 const navOverlay = document.getElementById('navOverlay');
@@ -50,6 +56,7 @@ navOverlay.addEventListener('click', () => toggleMenu(false));
 document.querySelectorAll('.nav-menu a')
   .forEach(a => a.addEventListener('click', () => toggleMenu(false)));
 
+/* ── ACTIVE NAV LINK (highlight current page) ── */
 const currentPage = window.location.pathname.split('/').pop() || 'index.html';
 document.querySelectorAll('.nav-menu a').forEach(a => {
   const href = a.getAttribute('href');
@@ -60,11 +67,13 @@ document.querySelectorAll('.nav-menu a').forEach(a => {
   }
 });
 
+/* ── SCROLL ANIMATIONS ── */
 const observer = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.1 });
 document.querySelectorAll('.anim').forEach(el => observer.observe(el));
 
+/* ── FOOTER CLOCK ── */
 function tick() {
   const el = document.getElementById('clock-footer');
   if (!el) return;
@@ -77,6 +86,7 @@ function tick() {
 tick();
 setInterval(tick, 1000);
 
+/* ── SKILL BARS (About page) ── */
 function animateSkillBars() {
   document.querySelectorAll('.skill-bar-fill').forEach(bar => {
     const w = bar.dataset.width;
@@ -84,14 +94,16 @@ function animateSkillBars() {
   });
 }
 
+// Auto-trigger on About page
 if (document.querySelector('.skill-bar-fill')) {
-
+  // Trigger when in viewport
   const skillObserver = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) animateSkillBars(); });
   }, { threshold: 0.2 });
   document.querySelectorAll('.skills-grid').forEach(el => skillObserver.observe(el));
 }
 
+/* ── PROJECT FILTERS (Portfolio page) ── */
 const filterBar = document.getElementById('filterBar');
 if (filterBar) {
   filterBar.addEventListener('click', e => {
@@ -107,6 +119,7 @@ if (filterBar) {
   });
 
 }
+/* ── Social Menu (About page) ── */
  document.querySelectorAll('.social-menu a').forEach(link => {
       link.addEventListener('click', function(e) {
         const ripple = document.createElement('span');
@@ -119,10 +132,12 @@ if (filterBar) {
       });
     });
 
+/* ── Transmission (About page) ── */
      const form       = document.getElementById('contactForm');
     const submitBtn  = document.getElementById('submitBtn');
     const statusOk   = document.getElementById('statusSuccess');
     const statusErr  = document.getElementById('statusError');
+
 
 
     form.addEventListener('submit', async function(e) {
@@ -162,4 +177,30 @@ if (filterBar) {
     submitBtn.classList.remove('loading');
     submitBtn.disabled = false;
   }
+});
+/* ── Carousel (Portfolio page) ── */
+document.querySelectorAll('[data-carousel]').forEach(carousel => {
+  const track = carousel.querySelector('.carousel-track');
+  const slides = carousel.querySelectorAll('.carousel-slide');
+  const dots = carousel.querySelectorAll('.carousel-dot');
+  const prev = carousel.querySelector('.carousel-prev');
+  const next = carousel.querySelector('.carousel-next');
+  let current = 0;
+
+  function goTo(index) {
+    current = (index + slides.length) % slides.length;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    dots.forEach((d, i) => d.classList.toggle('active', i === current));
+  }
+
+  prev?.addEventListener('click', () => goTo(current - 1));
+  next?.addEventListener('click', () => goTo(current + 1));
+  dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
+
+  // optional: auto-advance when card is hovered
+  let timer;
+  carousel.addEventListener('mouseenter', () => {
+    timer = setInterval(() => goTo(current + 1), 3000);
+  });
+  carousel.addEventListener('mouseleave', () => clearInterval(timer));
 });
