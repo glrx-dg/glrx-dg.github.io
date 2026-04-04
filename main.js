@@ -92,7 +92,7 @@
       ctx.restore();
     }
   }
-
+  
   class Spark {
     constructor() { this.reset(); }
     reset() {
@@ -144,14 +144,25 @@
     sparks.forEach(sp => { sp.update(); sp.draw(); });
 
     time++;
-    requestAnimationFrame(draw);
+    if (!document.hidden) requestAnimationFrame(draw);
   }
 
   resize();
   init();
-  draw();
-  window.addEventListener('resize', () => { resize(); });
+  if ('requestIdleCallback' in window) {
+    requestIdleCallback(() => { draw(); }, { timeout: 2000 });
+  } else {
+    setTimeout(() => { draw(); }, 200);
+  }
+  window.addEventListener('resize', () => { resize(); }, { passive: true });
 })();
+
+document.addEventListener('visibilitychange', () => {
+if (!document.hidden) {
+const canvas = document.getElementById('bg-canvas');
+if (canvas && canvas._draw) canvas._draw();
+}
+});
 
 const html = document.documentElement;
 let isDark = (localStorage.getItem('glrx-theme') || 
