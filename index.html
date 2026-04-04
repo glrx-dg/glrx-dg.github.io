@@ -3,89 +3,411 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#000000" id="meta-theme">
-  <title>GLRX</title>
+  <title>GLRX — Gail Rex Portfolio</title>
   <link rel="icon" type="image/png" href="img/logo.jpg">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <div class="grid-bg"></div>
-  <div class="scanlines"></div>
-  <div class="glow-blob one"></div>
-  <div class="glow-blob two"></div>
+<canvas id="bg-canvas"></canvas>
+<div class="bg-overlay"></div>
+<nav id="side-nav" role="navigation" aria-label="Main navigation">
+  <a href="#hero" class="nav-logo" aria-label="GLRX Home">
+    <div class="nav-logo-icon"><img src="img/logo.jpg" alt="GLRX Logo" style="width:100%;height:100%;object-fit:cover;border-radius:6px;display:block;"></div>
+    <span class="nav-logo-text">GLRX</span>
+  </a>
+  <div class="nav-divider"></div>
 
-  <nav>
-    <div class="nav-container">
-      <a href="index.html" class="logo">GLRX</a>
-      <ul class="nav-menu" id="navMenu">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="portfolio.html">Portfolio</a></li>
-        <li><a href="contact.html">Contact</a></li>
-      </ul>
-      <div class="nav-right">
-        <div class="nav-status">
-          <div class="pulse-dot"></div>
-          <span>ONLINE</span>
-        </div>
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-          <span id="themeIcon">☀️</span>
-          <span class="toggle-label" id="themeLabel">LIGHT</span>
-        </button>
-        <div class="hamburger" id="hamburger" role="button" tabindex="0" aria-label="Open menu">
-          <span></span><span></span><span></span>
-        </div>
-      </div>
-    </div>
-  </nav>
-  <div class="nav-overlay" id="navOverlay"></div>
+  <a href="#hero" class="nav-item active" data-section="hero">
+    <span class="nav-item-icon"><i class="fas fa-house"></i></span>
+    <span class="nav-item-label">Home</span>
+  </a>
+  <a href="#about" class="nav-item" data-section="about">
+    <span class="nav-item-icon"><i class="fas fa-user"></i></span>
+    <span class="nav-item-label">About</span>
+  </a>
+  <a href="#portfolio" class="nav-item" data-section="portfolio">
+    <span class="nav-item-icon"><i class="fas fa-layer-group"></i></span>
+    <span class="nav-item-label">Work</span>
+  </a>
+  <a href="#contact" class="nav-item" data-section="contact">
+    <span class="nav-item-icon"><i class="fas fa-paper-plane"></i></span>
+    <span class="nav-item-label">Contact</span>
+  </a>
 
-  <div class="page-content">
-    <div class="hero">
-      <div class="hero-sys fade-in d1">SYS::PORTFOLIO_v1.0</div>
-      <h1 class="hero-h1 fade-in d2">I AM<br><span>GAIL REX</span></h1>
-      <p class="hero-sub fade-in d3">Designer · Developer · Creator — building digital experiences with precision and purpose.</p>
-      <div class="hero-btns fade-in d4">
-        <a href="portfolio.html" class="btn">&gt;&gt; View My Work</a>
-        <a href="https://drive.google.com/drive/folders/11mrQ1gix2u-LSdObBIxlcXJw3hefxD4c?usp=sharing" class="btn mag-btn">&gt; DOWNLOAD CV</a>
-      </div>
-    </div>
-
-    <div class="sep-row" style="max-width:1200px; margin:0 auto; padding:0 clamp(1rem,4vw,2rem);">
-      <div class="sep-line"></div>
-      <span class="sep-text">// WHAT I DO</span>
-      <div class="sep-line"></div>
-    </div>
-
-    <div class="services-grid">
-      <div class="fx-card anim">
-        <div class="card-tag">[ 01 // DESIGN ]</div>
-        <div class="card-title">UI / UX Design</div>
-        <div class="card-body">Crafting interfaces that balance aesthetics with functionality — from wireframes to pixel-perfect prototypes.</div>
-      </div>
-      <div class="fx-card mag anim">
-        <div class="card-tag">[ 02 // DEV ]</div>
-        <div class="card-title">Frontend Development</div>
-        <div class="card-body">Building responsive, performant web experiences with modern technologies and clean, maintainable code.</div>
-      </div>
-      <div class="fx-card anim" hidden>
-        <div class="card-tag">[ 03 // BRAND ]</div>
-        <div class="card-title">Branding & Identity</div>
-        <div class="card-body">Creating cohesive visual systems and brand identities that resonate and endure across all touchpoints.</div>
-      </div>
-    </div>
+  <div class="nav-divider" style="margin-top:auto;"></div>
+  <div class="nav-bottom">
+    <button class="nav-icon-btn" id="themeToggle" title="Toggle theme" aria-label="Toggle theme">
+      <span id="themeIcon">☀️</span>
+    </button>
   </div>
+</nav>
 
-  <footer>
-    <div class="footer-inner">
-      <span class="footer-brand">© 2026 GLRX</span>
-      <span class="footer-clock" id="clock-footer">00:00:00</span>
-      <span class="footer-sys">SYS::END</span>
+<main id="main-content">
+  <section id="hero">
+    <div class="hero-inner">
+      <div class="hero-text">
+        <div class="hero-badge reveal">
+          <div class="hero-badge-dot"></div>
+          <span class="label-sm">Available for projects</span>
+        </div>
+        <div class="hero-h1-line">
+          <h1>I Am</h1>
+        </div>
+        <div class="hero-h1-line">
+          <h1><em>Gail Rex</em></h1>
+        </div>
+        <p class="hero-sub reveal reveal-delay-2">Designer · Developer · Creator — building digital experiences with precision and quiet luxury.</p>
+        <div class="hero-btns reveal reveal-delay-3">
+          <a href="#portfolio" class="btn-primary"><i class="fas fa-layer-group"></i> View Work</a>
+          <a href="https://drive.google.com/drive/folders/11mrQ1gix2u-LSdObBIxlcXJw3hefxD4c?usp=sharing" 
+            class="btn-ghost" target="_blank"><i class="fas fa-download"></i> Download CV</a>
+        </div>
+      </div>
     </div>
-  </footer>
 
-  <script src="main.js"></script>
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-top: 4rem;">
+      <div class="glass-card reveal" style="padding: 1.8rem;">
+        <div class="label-sm" style="margin-bottom:0.7rem;">01 / Design</div>
+        <div style="font-family:'Syne',sans-serif; font-weight:700; font-size: 17px; color:var(--text-h); margin-bottom:0.5rem;">UI / UX Design</div>
+        <div style="font-size: 13px; color:var(--text-dim); line-height:1.7;">
+                    Crafting interfaces that balance aesthetics with functionality — from wireframes to pixel-perfect prototypes.</div>
+      </div>
+      <div class="glass-card reveal reveal-delay-1" style="padding: 1.8rem; border-color: rgba(192,94,255,0.18);">
+        <div class="label-sm" style="margin-bottom:0.7rem; color:var(--magenta);">02 / Dev</div>
+        <div style="font-family:'Syne',sans-serif; font-weight:700; font-size: 17px; color:var(--text-h); margin-bottom:0.5rem;">Frontend Development</div>
+        <div style="font-size: 13px; color:var(--text-dim); line-height:1.7;">
+                    Building responsive, performant web experiences with modern technologies and clean code.</div>
+      </div>
+      <!-- div class="glass-card reveal reveal-delay-2" style="padding: 1.8rem;">
+        <div class="label-sm" style="margin-bottom:0.7rem;">03 / Brand</div>
+        <div style="font-family:'Syne',sans-serif; font-weight:700; font-size: 17px; color:var(--text-h); margin-bottom:0.5rem;">Branding & Identity</div>
+        <div style="font-size: 13px; color:var(--text-dim); line-height:1.7;">Creating cohesive visual systems and brand identities that resonate across all touchpoints.</div>
+      </div -->
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="label-sm reveal" style="margin-bottom:0.6rem;"></div>
+    <h2 class="reveal reveal-delay-1">About <em>Me</em></h2>
+
+    <div class="about-layout" style="display:grid; grid-template-columns: 340px 1fr; gap:2rem; margin-top:2.5rem; align-items:start;">
+    <div class="glass-card reveal" style="padding:2rem; display:flex; flex-direction:column; align-items:center; gap:1.5rem;">
+    <div style="position:relative; width:min(260px, 100%); aspect-ratio:1;">
+        <svg style="position:absolute;inset:0;width:100%;height:100%;animation:spinRing 7s linear infinite;transform-origin:center;" viewBox="0 0 260 260" fill="none">
+            <circle cx="130" cy="130" r="122" stroke="rgba(56,197,255,0.12)" stroke-width="1" stroke-dasharray="6 6"/>
+            <circle cx="130" cy="130" r="122" stroke="rgba(56,197,255,0.8)" stroke-width="1.5" stroke-dasharray="32 480"/>
+        </svg>
+        <svg style="position:absolute;inset:14px;width:calc(100% - 28px);height:calc(100% - 28px);animation:spinRingR 11s linear infinite;
+                    transform-origin:center;" viewBox="0 0 232 232" fill="none">
+            <circle cx="116" cy="116" r="108" stroke="rgba(192,94,255,0.18)" stroke-width="1" stroke-dasharray="4 9"/>
+            <circle cx="116" cy="116" r="108" stroke="rgba(192,94,255,0.65)" stroke-width="1" stroke-dasharray="20 420"/>
+        </svg>
+    <div style="position:absolute;inset:26px;border-radius:50%;overflow:hidden;border:1.5px solid var(--glass-border);
+                box-shadow:0 0 50px rgba(56,197,255,0.22),inset 0 0 24px rgba(0,0,0,0.35);">
+           <img src="img/GLRX.png" alt="Gail Rex" style="width:100%;height:100%;object-fit:cover;object-position:center 12%;
+                display:block;filter:brightness(1.05) contrast(1.05);">
+    </div>
+    <div style="position:absolute;inset:26px;border-radius:50%;background:linear-gradient(180deg,transparent 0%,rgba(56,197,255,0.07) 50%,transparent 100%);
+                background-size:100% 200%;animation:scanSweep 4s ease-in-out infinite;pointer-events:none;z-index:1;"></div>
+    </div>
+
+    <div style="width:100%;">
+          <div class="status-row"><span class="status-key">Name</span><span class="status-val">de Guzman, Gail Rex</span></div>
+          <div class="status-row"><span class="status-key">Role</span><span class="status-val">Web Designer / Dev</span></div>
+          <div class="status-row"><span class="status-key">Location</span><span class="status-val">Cainta, Rizal</span></div>
+          <div class="status-row"><span class="status-key">Status</span><span class="status-val live">Available</span></div>
+          <div class="status-row" style="border-bottom:none;"><span class="status-key">Focus</span><span class="status-val">UI/UX + Frontend</span></div>
+    </div>
+    <div style="display:flex;justify-content:center;gap:0.7rem;padding-top:0.8rem;border-top:1px solid var(--glass-border);width:100%;">
+          <a href="#" class="social-link" title="Upwork"><i class="fab fa-upwork"></i></a>
+          <a href="#" class="social-link" title="GitHub"><i class="fab fa-github"></i></a>
+          <a href="#" class="social-link" title="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+    </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:1.4rem;">
+
+    <div class="glass-card reveal reveal-delay-1" style="padding:2rem 2.2rem;">
+          <p style="font-family:'Cormorant Garamond',serif;font-size: clamp(19px,2vw,25px);line-height:1.8;color:var(--text);
+            font-weight:300;font-style:italic;letter-spacing:0.01em;">
+            I build clean, responsive, and visually engaging digital experiences.
+            I transform ideas into polished interfaces that perform seamlessly across all devices,
+            combining thoughtful design with clean, efficient code.
+          </p>
+    </div>
+
+    <div class="glass-card reveal reveal-delay-2" style="padding:1.8rem 2rem;">
+          <div class="label-sm" style="margin-bottom:1.3rem;">Experience</div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-year">Online Helpers &nbsp;|&nbsp; 2025</div>
+            <div class="tl-title">Virtual Assistant / AI Trainer</div>
+            <div class="tl-desc">Supervise AI systems in processing orders and monitor usage errors.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-year">Bladegrass Technologies &nbsp;|&nbsp; 2022–2023</div>
+            <div class="tl-title">Technical Support Engineer</div>
+            <div class="tl-desc">Handled IT support tickets, reduced recurring issues systematically.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-year">VueScribe / TechSynergy &nbsp;|&nbsp; 2009–2014</div>
+            <div class="tl-title">Medical Transcriptionist</div>
+            <div class="tl-desc">Transcribed reports with 98% accuracy. Strong attention to detail.</div>
+          </div>
+    </div>
+
+    <div hidden class="glass-card reveal reveal-delay-3" style="padding:1.8rem 2rem;">
+          <div class="label-sm" style="margin-bottom:1.3rem;">Skills</div>
+          <div class="skill-item">
+            <div class="skill-top"><span>UI / UX Design</span><span class="skill-pct">92%</span></div>
+            <div class="skill-track"><div class="skill-fill" data-width="92"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-top"><span>HTML / CSS</span><span class="skill-pct">95%</span></div>
+            <div class="skill-track"><div class="skill-fill" data-width="95"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-top"><span>JavaScript</span><span class="skill-pct">85%</span></div>
+            <div class="skill-track"><div class="skill-fill" data-width="85"></div></div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-top"><span>Figma</span><span class="skill-pct">90%</span></div>
+            <div class="skill-track"><div class="skill-fill" data-width="90"></div></div>
+          </div>
+    </div>
+    </div>
+    </div>
+  </section>
+
+  <section id="portfolio">
+    <div class="label-sm reveal" style="margin-bottom:0.6rem;"></div>
+    <h2 class="reveal reveal-delay-1">Project <em>Archive</em></h2>
+
+    <div class="filter-bar reveal reveal-delay-2" id="filterBar">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="design">Design</button>
+      <button class="filter-btn" data-filter="dev">Dev</button>
+      <button class="filter-btn" data-filter="brand">Brand</button>
+    </div>
+
+    <div class="projects-grid" id="projectsGrid">
+      <div class="project-card reveal" data-cat="design">
+        <div class="project-thumb carousel-thumb">
+          <div class="carousel-track">
+            <div class="carousel-slide"><img src="img/geoph/geoph.png" alt="GeoPH Land Survey"></div>
+          </div>
+          <div class="thumb-overlay"></div>
+          <span class="thumb-label">PROJECT_01</span>
+        </div>
+        <div class="project-body">
+          <div class="project-meta">
+            <span class="project-cat">Design</span>
+            <span class="project-year">2026</span>
+          </div>
+          <div class="project-title">GeoPH Land Survey</div>
+          <div class="project-desc">
+            Single-page business website for a licensed Geodetic Engineer. Custom SVG illustrations,
+            responsive grid layouts, CSS animations, and an interactive inquiry form.</div>
+          <div class="project-tags">
+            <span class="tag">HTML/CSS/JS</span>
+            <span class="tag">UI/UX</span>
+            <span class="tag">Responsive</span>
+          </div>
+          <div class="project-links">
+            <a href="https://glrx-project-01.vercel.app/" class="project-link" target="_blank">Live Demo</a>
+            <a href="#" class="project-link preview-trigger">
+              Preview
+              <span class="preview-pop"><img src="img/geoph/full.jpg" alt="Preview"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card mag-card reveal reveal-delay-1" data-cat="dev">
+        <div class="project-thumb carousel-thumb" data-carousel>
+          <div class="carousel-track">
+            <div class="carousel-slide"><img src="img/signifyr/signifyrfull.jpg" alt="Email Signature Generator"></div>
+            <div class="carousel-slide"><img src="img/signifyr/signifyr.png" alt="Outlook Signature"></div>
+            <div class="carousel-slide"><img src="img/signifyr/signifyr2.png" alt="Signature Preview"></div>
+          </div>
+          <button class="carousel-arrow carousel-prev">&#8249;</button>
+          <button class="carousel-arrow carousel-next">&#8250;</button>
+          <div class="carousel-dots">
+            <span class="carousel-dot active"></span>
+            <span class="carousel-dot"></span>
+            <span class="carousel-dot"></span>
+          </div>
+          <div class="thumb-overlay"></div>
+          <span class="thumb-label">PROJECT_02</span>
+        </div>
+        <div class="project-body">
+          <div class="project-meta">
+            <span class="project-cat">Dev</span>
+            <span class="project-year">2026</span>
+          </div>
+          <div class="project-title">Email Signature Generator</div>
+          <div class="project-desc">
+            Professional email signatures for Outlook, Gmail, Apple Mail & Thunderbird.
+            Single-file app — no frameworks, no build tools. Drag-and-drop deployable.</div>
+          <div class="project-tags">
+            <span class="tag">Netlify</span>
+            <span class="tag">HTML/CSS/JS</span>
+            <span class="tag">SEO</span>
+          </div>
+          <div class="project-links">
+            <a href="https://signifyr.netlify.app/" class="project-link" target="_blank">Live Demo</a>
+            <a href="#" class="project-link preview-trigger">
+              Preview
+              <span class="preview-pop"><img src="img/signifyr/signifyrfull.jpg" alt="Preview"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal reveal-delay-2" data-cat="design">
+        <div class="project-thumb carousel-thumb" data-carousel>
+          <div class="carousel-track">
+            <div class="carousel-slide"><img src="img/wix/soap1.png" alt="Wix Ecommerce 1"></div>
+            <div class="carousel-slide"><img src="img/wix/soap2.png" alt="Wix Ecommerce 2"></div>
+            <div class="carousel-slide"><img src="img/wix/soap3.png" alt="Wix Ecommerce 3"></div>
+            <div class="carousel-slide"><img src="img/wix/soap4.png" alt="Wix Ecommerce 4"></div>
+            <div class="carousel-slide"><img src="img/wix/soap5.png" alt="Wix Ecommerce 5"></div>
+          </div>
+          <button class="carousel-arrow carousel-prev">&#8249;</button>
+          <button class="carousel-arrow carousel-next">&#8250;</button>
+          <div class="carousel-dots">
+            <span class="carousel-dot active"></span>
+            <span class="carousel-dot"></span>
+            <span class="carousel-dot"></span>
+            <span class="carousel-dot"></span>
+            <span class="carousel-dot"></span>
+          </div>
+          <div class="thumb-overlay"></div>
+          <span class="thumb-label">PROJECT_03</span>
+        </div>
+        <div class="project-body">
+          <div class="project-meta">
+            <span class="project-cat">Design</span>
+            <span class="project-year">2026</span>
+          </div>
+          <div class="project-title">Wix Ecommerce Website</div>
+          <div class="project-desc">Modern, responsive eCommerce for a natural soap brand. Clean layout with earthy tones, 
+            smooth animations, and conversion-focused structure.</div>
+          <div class="project-tags">
+            <span class="tag">Wix Studio</span>
+            <span class="tag">Responsive</span>
+            <span class="tag">UI/UX</span>
+          </div>
+          <div class="project-links">
+            <a href="#" class="project-link">Live Demo</a>
+            <a href="img/wix/ecom.mp4" class="project-link preview-trigger">
+              Preview
+              <span class="preview-pop"><video src="img/wix/ecom.mp4" autoplay muted loop playsinline></video></span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="label-sm reveal" style="margin-bottom:0.6rem;"></div>
+    <h2 class="reveal reveal-delay-1">Get In <em>Touch</em></h2>
+
+    <div class="contact-grid">
+      <div class="glass-card contact-form-card reveal">
+        <form id="contactForm" novalidate action="https://formspree.io/f/mpqjvkew" method="POST">
+          <div class="form-group">
+            <label class="form-label" for="name">Name</label>
+            <input class="form-input" type="text" id="name" name="name" placeholder="Your full name" autocomplete="off" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="email">Email</label>
+            <input class="form-input" type="email" id="email" name="email" placeholder="your@email.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="subject">Subject</label>
+            <input class="form-input" type="text" id="subject" name="subject" placeholder="What is this about?">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="message">Message</label>
+            <textarea class="form-textarea" id="message" name="message" rows="5" placeholder="Write your message…" required></textarea>
+          </div>
+          <button type="submit" class="contact-submit" id="submitBtn">
+            <i class="fas fa-paper-plane"></i>
+            <span class="btn-text">Send Message</span>
+          </button>
+          <div class="form-status success" id="statusSuccess">✔ Transmission received — I'll get back to you shortly.</div>
+          <div class="form-status error" id="statusError">⚠ Signal disrupted — please check your inputs.</div>
+        </form>
+      </div>
+
+      <div>
+        <div class="glass-card contact-info-block reveal">
+          <div class="info-label">Email</div>
+          <a href="/cdn-cgi/l/email-protection#4e29223c36602a290e29232f2722602d2123" class="info-value"><i class="fas fa-envelope"></i>
+          <span class="__cf_email__" data-cfemail="62050e101a4c060522050f030b0e4c010d0f">[email&#160;protected]</span></a>
+        </div>
+        <div class="glass-card contact-info-block reveal reveal-delay-1">
+          <div class="info-label">Availability</div>
+          <div class="info-value"><i class="fas fa-circle" style="color:var(--accent);font-size: 8px;"></i> Available for freelance</div>
+        </div>
+        <div class="glass-card contact-info-block reveal reveal-delay-2">
+          <div class="info-label">Response Time</div>
+          <div class="info-value"><i class="fas fa-clock"></i> Within 24–48 hours</div>
+        </div>
+        <div class="glass-card contact-terminal reveal reveal-delay-3">
+          <div class="term-line"><span class="term-prompt">›</span> awaiting_input...</div>
+          <div class="term-line"><span class="term-prompt">›</span> signal_strength: <span style="color:var(--accent)">STRONG</span></div>
+          <div class="term-line"><span class="term-prompt">›</span> <span class="term-cursor">█</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<nav id="mobile-nav" role="navigation" aria-label="Mobile navigation">
+  <div class="mobile-nav-inner">
+    <a href="#hero" class="mobile-nav-item active" data-section="hero">
+      <span class="mobile-nav-icon"><i class="fas fa-house"></i></span>
+      <span class="mobile-nav-label">Home</span>
+    </a>
+    <a href="#about" class="mobile-nav-item" data-section="about">
+      <span class="mobile-nav-icon"><i class="fas fa-user"></i></span>
+      <span class="mobile-nav-label">About</span>
+    </a>
+    <a href="#portfolio" class="mobile-nav-item" data-section="portfolio">
+      <span class="mobile-nav-icon"><i class="fas fa-layer-group"></i></span>
+      <span class="mobile-nav-label">Work</span>
+    </a>
+    <a href="#contact" class="mobile-nav-item" data-section="contact">
+      <span class="mobile-nav-icon"><i class="fas fa-paper-plane"></i></span>
+      <span class="mobile-nav-label">Contact</span>
+    </a>
+    <button class="mobile-nav-theme" id="mobileThemeToggle" aria-label="Toggle theme">
+      <span class="mobile-nav-icon" id="mobileThemeIcon">2600Fe0f</span>
+      <span class="mobile-nav-label">Theme</span>
+    </button>
+  </div>
+</nav>
+
+<footer>
+  <span class="footer-brand">GLRX</span>
+  <div class="footer-mid">
+    <span>© 2026</span>
+    <span>·</span>
+    <span id="clock-footer">00:00:00</span>
+  </div>
+  <span class="label-sm" style="opacity:0.5;">SYS::END</span>
+</footer>
+
+<script src="main.js"></script>
 </body>
 </html>
