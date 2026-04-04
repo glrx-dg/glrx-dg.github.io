@@ -1,109 +1,225 @@
-/* ════════════════════════════════════════════
-   GLRX PORTFOLIO — main.js
-   Shared scripts for all pages
-════════════════════════════════════════════ */
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [], streams = [], time = 0;
+  const isDark = () => document.documentElement.getAttribute('data-theme') !== 'light';
 
-/* ── THEME ── */
-const html      = document.documentElement;
-const metaTheme = document.getElementById('meta-theme');
-const themeIcon  = document.getElementById('themeIcon');
-const themeLabel = document.getElementById('themeLabel');
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
 
-let isDark = (
-  localStorage.getItem('theme') ||
-  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
-) === 'dark';
+  class Particle {
+    constructor() { this.reset(); }
+    reset() {
+      this.x  = Math.random() * W;
+      this.y  = Math.random() * H;
+      this.vx = (Math.random() - 0.5) * 0.4;
+      this.vy = (Math.random() - 0.5) * 0.4;
+      this.life = Math.random();
+      this.maxLife = 0.6 + Math.random() * 0.4;
+      this.r  = 1 + Math.random() * 2;
+      this.type = Math.random() > 0.3 ? 'blue' : 'white';
+    }
+    update() {
+      this.x += this.vx; this.y += this.vy; this.life += 0.003;
+      if (this.life >= this.maxLife) this.reset();
+    }
+    draw() {
+      const alpha = Math.sin(this.life / this.maxLife * Math.PI) * 0.7;
+      ctx.save();
+      ctx.globalAlpha = alpha;
+      if (this.type === 'blue') {
+        ctx.shadowBlur = 8; ctx.shadowColor = isDark() ? '#38c5ff' : '#0077cc';
+        ctx.fillStyle  = isDark() ? '#38c5ff' : '#0077cc';
+      } else {
+        ctx.shadowBlur = 6; ctx.shadowColor = '#ffffff';
+        ctx.fillStyle  = isDark() ? 'rgba(255,255,255,0.8)' : 'rgba(100,160,220,0.8)';
+      }
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  class Stream {
+    constructor() { this.reset(); }
+    reset() {
+      this.x  = Math.random() * W;
+      this.y  = Math.random() * H;
+      this.len = 80 + Math.random() * 180;
+      this.angle = Math.random() * Math.PI * 2;
+      this.vAngle = (Math.random() - 0.5) * 0.005;
+      this.speed = 0.3 + Math.random() * 0.5;
+      this.life = 0;
+      this.maxLife = 1;
+      this.width = 1 + Math.random() * 2;
+      this.alpha = 0.08 + Math.random() * 0.18;
+    }
+    update() {
+      this.x += Math.cos(this.angle) * this.speed;
+      this.y += Math.sin(this.angle) * this.speed;
+      this.angle += this.vAngle;
+      this.life += 0.004;
+      if (this.life >= this.maxLife || this.x < -50 || this.x > W + 50 || this.y < -50 || this.y > H + 50)
+        this.reset();
+    }
+    draw() {
+      const a = Math.sin(this.life / this.maxLife * Math.PI) * this.alpha;
+      const grd = ctx.createLinearGradient(
+        this.x, this.y,
+        this.x + Math.cos(this.angle) * this.len,
+        this.y + Math.sin(this.angle) * this.len
+      );
+      const c = isDark() ? '56,197,255' : '0,119,204';
+      grd.addColorStop(0, `rgba(${c},0)`);
+      grd.addColorStop(0.3, `rgba(${c},${a})`);
+      grd.addColorStop(0.7, `rgba(${c},${a * 0.6})`);
+      grd.addColorStop(1, `rgba(${c},0)`);
+      ctx.save();
+      ctx.strokeStyle = grd;
+      ctx.lineWidth = this.width;
+      ctx.shadowBlur = 12;
+      ctx.shadowColor = isDark() ? 'rgba(56,197,255,0.4)' : 'rgba(0,119,204,0.3)';
+      ctx.beginPath();
+      ctx.moveTo(this.x, this.y);
+      ctx.lineTo(
+        this.x + Math.cos(this.angle) * this.len,
+        this.y + Math.sin(this.angle) * this.len
+      );
+      ctx.stroke();
+      ctx.restore();
+    }
+  }
+
+  class Spark {
+    constructor() { this.reset(); }
+    reset() {
+      this.x = Math.random() * W;
+      this.y = Math.random() * H;
+      this.vx = (Math.random() - 0.5) * 3;
+      this.vy = (Math.random() - 0.5) * 3;
+      this.life = 0;
+      this.maxLife = 0.3 + Math.random() * 0.4;
+      this.size = 2 + Math.random() * 4;
+    }
+    update() {
+      this.x += this.vx; this.y += this.vy;
+      this.vx *= 0.97; this.vy *= 0.97;
+      this.life += 0.015;
+      if (this.life >= this.maxLife) this.reset();
+    }
+    draw() {
+      const a = (1 - this.life / this.maxLife) * 0.6;
+      ctx.save();
+      ctx.globalAlpha = a;
+      ctx.shadowBlur = 10; ctx.shadowColor = isDark() ? '#38c5ff' : '#0077cc';
+      ctx.fillStyle = isDark() ? '#a0e8ff' : '#5cb0ff';
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.size * (1 - this.life / this.maxLife), 0, Math.PI * 2);
+      ctx.fill();
+      ctx.restore();
+    }
+  }
+
+  function init() {
+    particles = Array.from({length: 60}, () => new Particle());
+    streams   = Array.from({length: 18}, () => { const s = new Stream(); s.life = Math.random(); return s; });
+    sparks    = Array.from({length: 25}, () => { const sp = new Spark(); sp.life = Math.random(); return sp; });
+  }
+  let sparks = [];
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    if (isDark()) {
+      ctx.fillStyle = 'rgba(4,8,15,0.15)';
+    } else {
+      ctx.fillStyle = 'rgba(220,235,255,0.15)';
+    }
+    ctx.fillRect(0, 0, W, H);
+
+    streams.forEach(s => { s.update(); s.draw(); });
+    particles.forEach(p => { p.update(); p.draw(); });
+    sparks.forEach(sp => { sp.update(); sp.draw(); });
+
+    time++;
+    requestAnimationFrame(draw);
+  }
+
+  resize();
+  init();
+  draw();
+  window.addEventListener('resize', () => { resize(); });
+})();
+
+const html = document.documentElement;
+let isDark = (localStorage.getItem('glrx-theme') || 
+  (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark';
 
 function applyTheme(dark) {
   isDark = dark;
   html.setAttribute('data-theme', dark ? 'dark' : 'light');
-  if (themeIcon)  themeIcon.textContent  = dark ? '☀️' : '🌙';
-  if (themeLabel) themeLabel.textContent = dark ? 'LIGHT' : 'DARK';
-  if (metaTheme)  metaTheme.content      = dark ? '#000000' : '#faebd7';
-  localStorage.setItem('theme', dark ? 'dark' : 'light');
+  const icon = dark ? '☀️' : '🌙';
+  document.getElementById('themeIcon').textContent = icon;
+  const mIcon = document.getElementById('mobileThemeIcon');
+  if (mIcon) mIcon.textContent = icon;
+  localStorage.setItem('glrx-theme', dark ? 'dark' : 'light');
 }
-
 applyTheme(isDark);
+document.getElementById('themeToggle').addEventListener('click', () => applyTheme(!isDark));
+const mobileToggle = document.getElementById('mobileThemeToggle');
+if (mobileToggle) mobileToggle.addEventListener('click', () => applyTheme(!isDark));
 
-document.getElementById('themeToggle')
-  .addEventListener('click', () => applyTheme(!isDark));
+const sideNav = document.getElementById('side-nav');
+let navExpanded = false;
 
-window.matchMedia('(prefers-color-scheme: dark)')
-  .addEventListener('change', e => {
-    if (!localStorage.getItem('theme')) applyTheme(e.matches);
+const sections = document.querySelectorAll('section[id]');
+const navItems = document.querySelectorAll('.nav-item[data-section]');
+
+const mobileNavItems = document.querySelectorAll('.mobile-nav-item[data-section]');
+
+function setActiveNav() {
+  let current = '';
+  sections.forEach(sec => {
+    const top = sec.getBoundingClientRect().top;
+    if (top <= window.innerHeight * 0.5) current = sec.id;
   });
-
-/* ── HAMBURGER NAV ── */
-const hamburger  = document.getElementById('hamburger');
-const navMenu    = document.getElementById('navMenu');
-const navOverlay = document.getElementById('navOverlay');
-
-function toggleMenu(open) {
-  hamburger.classList.toggle('active', open);
-  navMenu.classList.toggle('active', open);
-  navOverlay.classList.toggle('active', open);
-  document.body.style.overflow = open ? 'hidden' : '';
+  navItems.forEach(item => {
+    item.classList.toggle('active', item.dataset.section === current);
+  });
+  mobileNavItems.forEach(item => {
+    item.classList.toggle('active', item.dataset.section === current);
+  });
 }
+window.addEventListener('scroll', setActiveNav, { passive: true });
+setActiveNav();
 
-hamburger.addEventListener('click', () =>
-  toggleMenu(!hamburger.classList.contains('active'))
-);
-hamburger.addEventListener('keydown', e => {
-  if (e.key === 'Enter' || e.key === ' ')
-    toggleMenu(!hamburger.classList.contains('active'));
-});
-navOverlay.addEventListener('click', () => toggleMenu(false));
-document.querySelectorAll('.nav-menu a')
-  .forEach(a => a.addEventListener('click', () => toggleMenu(false)));
-
-/* ── ACTIVE NAV LINK (highlight current page) ── */
-const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-document.querySelectorAll('.nav-menu a').forEach(a => {
-  const href = a.getAttribute('href');
-  if (href === currentPage ||
-     (currentPage === '' && href === 'index.html') ||
-     (currentPage === 'index.html' && href === 'index.html')) {
-    a.classList.add('active');
-  }
+document.querySelectorAll('[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href');
+    if (id === '#') return;
+    const target = document.querySelector(id);
+    if (target) { e.preventDefault(); target.scrollIntoView({behavior:'smooth', block:'start'}); }
+  });
 });
 
-/* ── SCROLL ANIMATIONS ── */
-const observer = new IntersectionObserver(entries => {
+const revealObs = new IntersectionObserver(entries => {
   entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold: 0.1 });
-document.querySelectorAll('.anim').forEach(el => observer.observe(el));
+document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
 
-/* ── FOOTER CLOCK ── */
-function tick() {
-  const el = document.getElementById('clock-footer');
-  if (!el) return;
-  el.textContent = [
-    new Date().getHours(),
-    new Date().getMinutes(),
-    new Date().getSeconds()
-  ].map(n => String(n).padStart(2, '0')).join(':');
-}
-tick();
-setInterval(tick, 1000);
-
-/* ── SKILL BARS (About page) ── */
-function animateSkillBars() {
-  document.querySelectorAll('.skill-bar-fill').forEach(bar => {
-    const w = bar.dataset.width;
-    setTimeout(() => { bar.style.transform = `scaleX(${w / 100})`; }, 300);
+const skillObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.currentTarget.querySelectorAll('.skill-fill').forEach(bar => {
+        bar.style.transform = `scaleX(${bar.dataset.width / 100})`;
+      });
+    }
   });
-}
+}, { threshold: 0.2 });
+document.querySelectorAll('.glass-card').forEach(c => { if (c.querySelector('.skill-fill')) skillObs.observe(c); });
 
-// Auto-trigger on About page
-if (document.querySelector('.skill-bar-fill')) {
-  // Trigger when in viewport
-  const skillObserver = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) animateSkillBars(); });
-  }, { threshold: 0.2 });
-  document.querySelectorAll('.skills-grid').forEach(el => skillObserver.observe(el));
-}
-
-/* ── PROJECT FILTERS (Portfolio page) ── */
 const filterBar = document.getElementById('filterBar');
 if (filterBar) {
   filterBar.addEventListener('click', e => {
@@ -111,96 +227,64 @@ if (filterBar) {
     if (!btn) return;
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    const filter = btn.dataset.filter;
-    document.querySelectorAll('.project-card').forEach(card => {
-      const match = filter === 'all' || card.dataset.cat === filter;
-      card.style.display = match ? '' : 'none';
+    const f = btn.dataset.filter;
+    document.querySelectorAll('.project-card').forEach(c => {
+      c.style.display = (f === 'all' || c.dataset.cat === f) ? '' : 'none';
     });
   });
-
 }
-/* ── Social Menu (About page) ── */
- document.querySelectorAll('.social-menu a').forEach(link => {
-      link.addEventListener('click', function(e) {
-        const ripple = document.createElement('span');
-        ripple.classList.add('ripple');
-        const rect = this.getBoundingClientRect();
-        ripple.style.left = (e.clientX - rect.left) + 'px';
-        ripple.style.top  = (e.clientY - rect.top)  + 'px';
-        this.appendChild(ripple);
-        ripple.addEventListener('animationend', () => ripple.remove());
-      });
-    });
 
-/* ── Transmission (About page) ── */
-     const form       = document.getElementById('contactForm');
-    const submitBtn  = document.getElementById('submitBtn');
-    const statusOk   = document.getElementById('statusSuccess');
-    const statusErr  = document.getElementById('statusError');
+document.querySelectorAll('.carousel-thumb[data-carousel]').forEach(thumb => {
+  const track = thumb.querySelector('.carousel-track');
+  const slides = thumb.querySelectorAll('.carousel-slide');
+  const dots   = thumb.querySelectorAll('.carousel-dot');
+  const prev   = thumb.querySelector('.carousel-prev');
+  const next   = thumb.querySelector('.carousel-next');
+  if (!slides.length) return;
+  let idx = 0;
 
+  function go(i) {
+    idx = (i + slides.length) % slides.length;
+    track.style.width = `${slides.length * 100}%`;
+    slides.forEach(s => s.style.width = `${100 / slides.length}%`);
+    track.style.transform = `translateX(-${idx * (100 / slides.length)}%)`;
+    dots.forEach((d, di) => d.classList.toggle('active', di === idx));
+  }
+  track.style.width = `${slides.length * 100}%`;
+  slides.forEach(s => s.style.width = `${100 / slides.length}%`);
 
+  if (prev) prev.addEventListener('click', e => { e.stopPropagation(); go(idx - 1); });
+  if (next) next.addEventListener('click', e => { e.stopPropagation(); go(idx + 1); });
+  dots.forEach((d, di) => d.addEventListener('click', e => { e.stopPropagation(); go(di); }));
+});
 
-    form.addEventListener('submit', async function(e) {
+const form = document.getElementById('contactForm');
+if (form) {
+  form.addEventListener('submit', async e => {
     e.preventDefault();
-    statusOk.classList.remove('visible');
-    statusErr.classList.remove('visible');
-
-    const name    = form.name.value.trim();
-    const email   = form.email.value.trim();
-    const message = form.message.value.trim();
-    const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!name || !email || !message || !emailRe.test(email)) {
-    statusErr.classList.add('visible');
-    return;
-  }
-
-    submitBtn.classList.add('loading');
-    submitBtn.disabled = true;
-
+    const btn = document.getElementById('submitBtn');
+    const ok  = document.getElementById('statusSuccess');
+    const err = document.getElementById('statusError');
+    btn.disabled = true;
+    btn.querySelector('.btn-text').textContent = 'Sending…';
+    ok.classList.remove('visible'); err.classList.remove('visible');
     try {
-    const res = await fetch(form.action, {
-      method: 'POST',
-      body: new FormData(form),
-      headers: { 'Accept': 'application/json' }
-    });
-
-    if (res.ok) {
-      statusOk.classList.add('visible');
-      form.reset();
-    } else {
-      statusErr.classList.add('visible');
-    }
-    } catch {
-    statusErr.classList.add('visible');
-    } finally {
-    submitBtn.classList.remove('loading');
-    submitBtn.disabled = false;
-  }
-});
-/* ── Carousel (Portfolio page) ── */
-document.querySelectorAll('[data-carousel]').forEach(carousel => {
-  const track = carousel.querySelector('.carousel-track');
-  const slides = carousel.querySelectorAll('.carousel-slide');
-  const dots = carousel.querySelectorAll('.carousel-dot');
-  const prev = carousel.querySelector('.carousel-prev');
-  const next = carousel.querySelector('.carousel-next');
-  let current = 0;
-
-  function goTo(index) {
-    current = (index + slides.length) % slides.length;
-    track.style.transform = `translateX(-${current * 100}%)`;
-    dots.forEach((d, i) => d.classList.toggle('active', i === current));
-  }
-
-  prev?.addEventListener('click', () => goTo(current - 1));
-  next?.addEventListener('click', () => goTo(current + 1));
-  dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
-
-  // optional: auto-advance when card is hovered
-  let timer;
-  carousel.addEventListener('mouseenter', () => {
-    timer = setInterval(() => goTo(current + 1), 3000);
+      const res = await fetch(form.action, {
+        method: 'POST', headers: {'Accept':'application/json'},
+        body: new FormData(form)
+      });
+      if (res.ok) { ok.classList.add('visible'); form.reset(); }
+      else err.classList.add('visible');
+    } catch { err.classList.add('visible'); }
+    btn.disabled = false;
+    btn.querySelector('.btn-text').textContent = 'Send Message';
   });
-  carousel.addEventListener('mouseleave', () => clearInterval(timer));
-});
+}
+
+function tick() {
+  const el = document.getElementById('clock-footer');
+  if (!el) return;
+  el.textContent = new Date().toTimeString().slice(0,8);
+}
+tick(); setInterval(tick, 1000);
+
