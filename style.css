@@ -1007,6 +1007,7 @@ body.nav-open footer { margin-left: calc(var(--nav-w-open) + 40px); }
   font-size: 18px; letter-spacing: 0.3em;
   color: var(--accent);
   text-shadow: 0 0 16px var(--accent-glow);
+  margin-left: 40px;
 }
 .footer-mid {
   font-family: 'JetBrains Mono', monospace;
