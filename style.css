@@ -77,6 +77,7 @@ body {
     rgba(4, 8, 15, 0.5) 100%
   );
 }
+
 [data-theme="light"] .bg-overlay {
   background: radial-gradient(ellipse at 50% 50%,
     transparent 40%,
@@ -196,6 +197,7 @@ body {
   opacity: 0;
   transition: opacity 0.3s;
 }
+
 .nav-item:hover::before,
 .nav-item.active::before { opacity: 1; }
 .nav-item:hover,
@@ -229,6 +231,7 @@ body {
   position: relative;
   z-index: 1;
 }
+
 .nav-item:hover .nav-item-label,
 .nav-item.active .nav-item-label {
   opacity: 1;
