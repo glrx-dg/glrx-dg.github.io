@@ -647,8 +647,12 @@ h2 em { font-style: italic; color: var(--accent); }
   line-height: 1.6;
 }
 
-#portfolio { min-height: auto; padding-top: 2rem; }
-
+#portfolio {
+  min-height: auto; 
+  padding-top: 2rem; 
+  content-visibility: auto; 
+  contain-intrinsic-size: 0 800px;
+}
 .filter-bar {
   display: flex; gap: 0.6rem; flex-wrap: wrap;
   margin: 2rem 0 2.5rem;
@@ -682,8 +686,8 @@ h2 em { font-style: italic; color: var(--accent); }
 
 .project-card {
   background: var(--glass-bg);
-  backdrop-filter: blur(var(--blur));
-  -webkit-backdrop-filter: blur(var(--blur));
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--glass-border);
   border-radius: 20px;
   overflow: hidden;
@@ -874,8 +878,13 @@ h2 em { font-style: italic; color: var(--accent); }
 .preview-pop img, .preview-pop video { width: 100%; height: auto; display: block; }
 .project-link.preview-trigger:hover .preview-pop { opacity: 1; transform: translateY(0); pointer-events: all; }
 
-#contact { min-height: auto; padding-top: 2rem; padding-bottom: 4rem; }
-
+#contact {
+  min-height: auto; 
+  padding-top: 2rem; 
+  padding-bottom: 4rem; 
+  content-visibility: auto; 
+  contain-intrinsic-size: 0 600px; 
+}
 .contact-grid {
   display: grid;
   grid-template-columns: 1fr 320px;
